@@ -1,4 +1,4 @@
-# OrleansCouchBaseProviders
+# OrleansCouchbaseProviders
 
 This repository to contains a set of providers for running [Microsoft Orleans](http://github.com/dotnet/orleans) using [Couchbase](http://couchbase.com) as the storage layer.
 
@@ -14,7 +14,7 @@ Currently supports:
 The storage provider can be registered like this:
 
 ``` csharp
-config.Globals.RegisterStorageProvider<Orleans.Storage.OrleansCouchBaseStorage>("default", new Dictionary<string, string>
+config.Globals.RegisterStorageProvider<Orleans.Storage.OrleansCouchbaseStorage>("default", new Dictionary<string, string>
 {
     { "Server", "http://localhost:8091" },
     { "UserName", "" },
@@ -30,16 +30,16 @@ The membership provider can be used like this:
 ``` csharp
 config.Globals.DeploymentId = "";
 config.Globals.LivenessType = GlobalConfiguration.LivenessProviderType.Custom;
-config.Globals.MembershipTableAssembly = "CouchBaseProviders";
+config.Globals.MembershipTableAssembly = "CouchbaseProviders";
 
-config.Globals.RegisterStorageProvider<Orleans.Storage.OrleansCouchBaseStorage>("default", new Dictionary<string, string>
+config.Globals.RegisterStorageProvider<Orleans.Storage.OrleansCouchbaseStorage>("default", new Dictionary<string, string>
 {
     { "Server", "http://localhost:8091" },
     { "UserName", "" },
     { "Password", "" },
     { "BucketName", "default" }
 });
-config.Globals.RegisterStorageProvider<Orleans.Storage.OrleansCouchBaseStorage>("PubSubStore", new Dictionary<string, string>
+config.Globals.RegisterStorageProvider<Orleans.Storage.OrleansCouchbaseStorage>("PubSubStore", new Dictionary<string, string>
 {
     { "Server", "http://localhost:8091" },
     { "UserName", "" },
@@ -66,7 +66,7 @@ To use this feature you need to update your app.config or web.config file;
 Add the following under the <configSections> element:
 
 ``` xml
-<section name="orleans" type="CouchBaseProviders.Configuration.CouchbaseOrleansDocumentExpiry.CouchbaseOrleansConfigurationSection, CouchbaseProviders" />
+<section name="orleans" type="CouchbaseProviders.Configuration.CouchbaseOrleansDocumentExpiry.CouchbaseOrleansConfigurationSection, CouchbaseProviders" />
 ```
 
 ### Add the config section with per grain expiry values:
@@ -86,12 +86,12 @@ The expiresIn value must be a valid TimeSpan format. Examples include:
 - 10 hours: 10:00:00
 - 10 days: 10:00:00:00
 
-Refer to the app.confg provided in the CouchBaseStorageTests project for more information.
+Refer to the app.confg provided in the CouchbaseStorageTests project for more information.
 
 ## How to help
 
 Take a look at the current issues and report any issues you find.
-The providers have been tested with CouchBase Community 4.1.
+The providers have been tested with Couchbase Community 4.1.
 
 ## License
 

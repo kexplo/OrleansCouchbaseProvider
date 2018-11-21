@@ -9,7 +9,7 @@ assembly_info:
 cache:
 - packages -> **\packages.config
 before_build:
-- ps: nuget restore .\CouchBaseProviders.sln
+- ps: nuget restore .\CouchbaseProviders.sln
 build:
   publish_nuget: true
   verbosity: minimal

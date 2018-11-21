@@ -4,22 +4,22 @@ using System.Threading.Tasks;
 using Orleans.Providers;
 using Couchbase;
 using Couchbase.Core;
-using CouchBaseProviders.Configuration;
+using CouchbaseProviders.Configuration;
 
 namespace Orleans.Storage
 {
     /// <summary>
-    /// Orleans storage provider implementation for CouchBase http://www.couchbase.com 
+    /// Orleans storage provider implementation for Couchbase http://www.couchbase.com 
     /// </summary>
     /// <remarks>
     /// The storage provider should be registered via programatic config or in a config file before you can use it.
     /// 
-    /// This providers uses optimistic concurrency and leverages the CAS of CouchBase when touching
+    /// This providers uses optimistic concurrency and leverages the CAS of Couchbase when touching
     /// the database. If we don't use this feature always the last write wins and it might be desired
     /// in specific scenarios and can be added later on as a feature. CAS is a ulong value stored as string in the
     /// ETag of the state object.
     /// </remarks>
-    public class OrleansCouchBaseStorage : BaseJSONStorageProvider
+    public class OrleansCouchbaseStorage : BaseJSONStorageProvider
     {
         /// <summary>
         /// This is used internally only to avoid reinitializing the client connection
@@ -44,15 +44,15 @@ namespace Orleans.Storage
 
             var documentExpiries = CouchbaseOrleansConfigurationExtensions.GetGrainExpiries();
 
-            DataManager = new CouchBaseDataManager(storageBucketName, clientConfiguration, documentExpiries);
+            DataManager = new CouchbaseDataManager(storageBucketName, clientConfiguration, documentExpiries);
             return base.Init(name, providerRuntime, config);
         }
     }
 
     /// <summary>
-    /// Interfaces with CouchBase on behalf of the provider.
+    /// Interfaces with Couchbase on behalf of the provider.
     /// </summary>
-    public class CouchBaseDataManager : IJSONStateDataManager
+    public class CouchbaseDataManager : IJSONStateDataManager
     {
         /// <summary>
         /// Name of the bucket that it works with.
@@ -74,7 +74,7 @@ namespace Orleans.Storage
         /// </summary>
         /// <param name="bucketName">Name of the bucket that this manager should operate on.</param>
         /// <param name="clientConfig">Configuration object for the database client</param>
-        public CouchBaseDataManager(string bucketName, Couchbase.Configuration.Client.ClientConfiguration clientConfig) : this(bucketName, clientConfig, new Dictionary<string, TimeSpan>())
+        public CouchbaseDataManager(string bucketName, Couchbase.Configuration.Client.ClientConfiguration clientConfig) : this(bucketName, clientConfig, new Dictionary<string, TimeSpan>())
         {
         }
 
@@ -84,7 +84,7 @@ namespace Orleans.Storage
         /// <param name="bucketName">Name of the bucket that this manager should operate on.</param>
         /// <param name="clientConfig">Configuration object for the database client</param>
         /// /// <param name="documentExpiries">Expiry times by grain type</param>
-        public CouchBaseDataManager(string bucketName, Couchbase.Configuration.Client.ClientConfiguration clientConfig, Dictionary<string, TimeSpan> documentExpiries)
+        public CouchbaseDataManager(string bucketName, Couchbase.Configuration.Client.ClientConfiguration clientConfig, Dictionary<string, TimeSpan> documentExpiries)
         {
             //Bucket name should not be empty
             //Keep in mind that you should create the buckets before being able to use them either
@@ -93,13 +93,13 @@ namespace Orleans.Storage
                 throw new ArgumentException("bucketName can not be null or empty");
             //config should not be null either
             if (clientConfig == null)
-                throw new ArgumentException("You should supply a configuration to connect to CouchBase");
+                throw new ArgumentException("You should supply a configuration to connect to Couchbase");
 
             this.bucketName = bucketName;
-            if (!OrleansCouchBaseStorage.IsInitialized)
+            if (!OrleansCouchbaseStorage.IsInitialized)
             {
                 ClusterHelper.Initialize(clientConfig);
-                OrleansCouchBaseStorage.IsInitialized = true;
+                OrleansCouchbaseStorage.IsInitialized = true;
             }
             else
             {
@@ -199,7 +199,7 @@ namespace Orleans.Storage
             bucket = null;
             //Closes the DB connection
             ClusterHelper.Close();
-            OrleansCouchBaseStorage.IsInitialized = false;
+            OrleansCouchbaseStorage.IsInitialized = false;
 			GC.SuppressFinalize(this);
         }
 

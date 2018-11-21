@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CouchBaseProviders")]
-[assembly: AssemblyDescription("CouchBase providers for msftorleans")]
+[assembly: AssemblyTitle("CouchbaseProviders")]
+[assembly: AssemblyDescription("Couchbase providers for msftorleans")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("NoOpArmy")]
-[assembly: AssemblyProduct("CouchBaseProviders")]
+[assembly: AssemblyProduct("CouchbaseProviders")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

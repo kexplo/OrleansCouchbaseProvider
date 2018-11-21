@@ -16,7 +16,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Orleans.Storage
 {
-    public class CouchBaseMembershipProvider : IMembershipTable
+    public class CouchbaseMembershipProvider : IMembershipTable
     {
         private MembershipDataManager manager;
 
@@ -69,7 +69,7 @@ namespace Orleans.Storage
         }
     }
 
-    public class CouchBaseGatewayListProvider : IGatewayListProvider
+    public class CouchbaseGatewayListProvider : IGatewayListProvider
     {
         public bool IsUpdatable { get { return true; } }
         private TimeSpan refreshRate;
@@ -108,7 +108,7 @@ namespace Orleans.Storage
         }
     }
 
-    public class MembershipDataManager : CouchBaseDataManager
+    public class MembershipDataManager : CouchbaseDataManager
     {
         private readonly TableVersion tableVersion = new TableVersion(0, "0");
 
@@ -125,7 +125,7 @@ namespace Orleans.Storage
             var getGateWaysQuery = new QueryRequest("select membership.* from membership");
             getGateWaysQuery.ScanConsistency(ScanConsistency.RequestPlus);
             getGateWaysQuery.Metrics(false);
-            IQueryResult<CouchBaseSiloRegistration> result = await bucket.QueryAsync<CouchBaseSiloRegistration>(getGateWaysQuery);
+            IQueryResult<CouchbaseSiloRegistration> result = await bucket.QueryAsync<CouchbaseSiloRegistration>(getGateWaysQuery);
 
             List<System.Uri> r = result.Rows.Where(x => x.Status == SiloStatus.Active && x.ProxyPort != 0).Select(x => CouchbaseSiloRegistrationmUtility.ToMembershipEntry(x).Item1).Select(x =>
             {
@@ -144,8 +144,8 @@ namespace Orleans.Storage
         {
             try
             {
-                CouchBaseSiloRegistration serializable = CouchbaseSiloRegistrationmUtility.FromMembershipEntry("", entry, "0");
-                IOperationResult<CouchBaseSiloRegistration> result = await bucket.InsertAsync<CouchBaseSiloRegistration>(entry.SiloAddress.ToParsableString(), serializable).ConfigureAwait(false);
+                CouchbaseSiloRegistration serializable = CouchbaseSiloRegistrationmUtility.FromMembershipEntry("", entry, "0");
+                IOperationResult<CouchbaseSiloRegistration> result = await bucket.InsertAsync<CouchbaseSiloRegistration>(entry.SiloAddress.ToParsableString(), serializable).ConfigureAwait(false);
                 return result.Success;
             }
             catch (Exception)
@@ -158,8 +158,8 @@ namespace Orleans.Storage
         {
             try
             {
-                CouchBaseSiloRegistration serializableData = CouchbaseSiloRegistrationmUtility.FromMembershipEntry("", entry, eTag);
-                IOperationResult<CouchBaseSiloRegistration> result = await bucket.UpsertAsync<CouchBaseSiloRegistration>(entry.SiloAddress.ToParsableString(), serializableData, ulong.Parse(eTag)).ConfigureAwait(false);
+                CouchbaseSiloRegistration serializableData = CouchbaseSiloRegistrationmUtility.FromMembershipEntry("", entry, eTag);
+                IOperationResult<CouchbaseSiloRegistration> result = await bucket.UpsertAsync<CouchbaseSiloRegistration>(entry.SiloAddress.ToParsableString(), serializableData, ulong.Parse(eTag)).ConfigureAwait(false);
                 return result.Success;
             }
             catch (Exception)
@@ -177,12 +177,12 @@ namespace Orleans.Storage
             var ids = await bucket.QueryAsync<JObject>(readAllQuery).ConfigureAwait(false);
 
             var idStrings = ids.Rows.Select(x => x["id"].ToString()).ToArray();
-            IDictionary<string, IOperationResult<CouchBaseSiloRegistration>> actuals = await Task.Run
-                (() => bucket.Get<CouchBaseSiloRegistration>(idStrings));//has no async version with batch reads
+            IDictionary<string, IOperationResult<CouchbaseSiloRegistration>> actuals = await Task.Run
+                (() => bucket.Get<CouchbaseSiloRegistration>(idStrings));//has no async version with batch reads
             List<Tuple<MembershipEntry, string>> entries = new List<Tuple<MembershipEntry, string>>();
             foreach (var actualRow in actuals.Values)
             {
-                //var actualRow = await bucket.GetAsync<CouchBaseSiloRegistration>(r["id"].ToString());
+                //var actualRow = await bucket.GetAsync<CouchbaseSiloRegistration>(r["id"].ToString());
                 entries.Add(
                     CouchbaseSiloRegistrationmUtility.ToMembershipEntry(actualRow.Value, actualRow.Cas.ToString()));
             }
@@ -203,7 +203,7 @@ namespace Orleans.Storage
         public async Task<MembershipTableData> ReadRow(SiloAddress key)
         {
             List<Tuple<MembershipEntry, string>> entries = new List<Tuple<MembershipEntry, string>>();
-            IOperationResult<CouchBaseSiloRegistration> row = await bucket.GetAsync<CouchBaseSiloRegistration>(key.ToParsableString()).ConfigureAwait(false);
+            IOperationResult<CouchbaseSiloRegistration> row = await bucket.GetAsync<CouchbaseSiloRegistration>(key.ToParsableString()).ConfigureAwait(false);
             if (row.Success)
             {
                 entries.Add(CouchbaseSiloRegistrationmUtility.ToMembershipEntry(row.Value, row.Cas.ToString()));
@@ -213,10 +213,10 @@ namespace Orleans.Storage
 
         public async Task UpdateIAmAlive(MembershipEntry entry)
         {
-            var data = await bucket.GetAsync<CouchBaseSiloRegistration>(entry.SiloAddress.ToParsableString());
+            var data = await bucket.GetAsync<CouchbaseSiloRegistration>(entry.SiloAddress.ToParsableString());
             data.Value.IAmAliveTime = entry.IAmAliveTime;
             var address = CouchbaseSiloRegistrationmUtility.ToMembershipEntry(data.Value).Item1.SiloAddress;
-            await bucket.UpsertAsync<CouchBaseSiloRegistration>(address.ToParsableString(), data.Value).ConfigureAwait(false);
+            await bucket.UpsertAsync<CouchbaseSiloRegistration>(address.ToParsableString(), data.Value).ConfigureAwait(false);
         }
     }
 }

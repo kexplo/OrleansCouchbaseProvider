@@ -19,14 +19,14 @@ namespace Orleans.Storage
         public ulong Cas { get; set; }
 
         [JsonProperty]
-        public CouchBaseSiloRegistration Membership { get; set; }
+        public CouchbaseSiloRegistration Membership { get; set; }
     }
 
     /// <summary>
     /// JSON Serializable Object that when serialized and Base64 encoded, forms the Value part of a Silo's couchbase KVPair
     /// </summary>
     [JsonObject]
-    public class CouchBaseSiloRegistration
+    public class CouchbaseSiloRegistration
     {
         /// <summary>
         /// Persisted as part of the KV Key therefore not serialised.
@@ -71,7 +71,7 @@ namespace Orleans.Storage
         public List<SuspectingSilo> SuspectingSilos { get; set; }
 
         [JsonConstructor]
-        internal CouchBaseSiloRegistration()
+        internal CouchbaseSiloRegistration()
         {
             SuspectingSilos = new List<SuspectingSilo>();
         }
@@ -97,11 +97,11 @@ namespace Orleans.Storage
     internal class CouchbaseSiloRegistrationmUtility
     {
 
-        internal static CouchBaseSiloRegistration FromMembershipEntry(String deploymentId, MembershipEntry entry, String etag)
+        internal static CouchbaseSiloRegistration FromMembershipEntry(String deploymentId, MembershipEntry entry, String etag)
         {
             if (entry.SuspectTimes == null)
                 entry.SuspectTimes = new List<Tuple<SiloAddress, DateTime>>();
-            var ret = new CouchBaseSiloRegistration
+            var ret = new CouchbaseSiloRegistration
             {
                 DeploymentId = deploymentId,
                 Address = entry.SiloAddress,
@@ -121,7 +121,7 @@ namespace Orleans.Storage
 
 
 
-        internal static Tuple<MembershipEntry, String> ToMembershipEntry(CouchBaseSiloRegistration siloRegistration,string cas="")
+        internal static Tuple<MembershipEntry, String> ToMembershipEntry(CouchbaseSiloRegistration siloRegistration,string cas="")
         {
             siloRegistration.Address = SiloAddress.FromParsableString(siloRegistration.SerializedAddress);
             var entry = new MembershipEntry

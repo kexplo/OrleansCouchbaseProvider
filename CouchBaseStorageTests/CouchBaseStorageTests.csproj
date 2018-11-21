@@ -7,8 +7,8 @@
     <ProjectGuid>{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CouchBaseStorageTests</RootNamespace>
-    <AssemblyName>CouchBaseStorageTests</AssemblyName>
+    <RootNamespace>CouchbaseStorageTests</RootNamespace>
+    <AssemblyName>CouchbaseStorageTests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -127,9 +127,9 @@
   <ItemGroup>
     <Compile Include="CouchbaseOrleansConfigurationExtensionsTests.cs" />
     <Compile Include="CouchbaseConfigurationExtensionsTests.cs" />
-    <Compile Include="CouchBaseMembershipDataManagerTests.cs" />
-    <Compile Include="CouchBaseDataManagerTests.cs" />
-    <Compile Include="CouchBaseGrainStorageTests.cs" />
+    <Compile Include="CouchbaseMembershipDataManagerTests.cs" />
+    <Compile Include="CouchbaseDataManagerTests.cs" />
+    <Compile Include="CouchbaseGrainStorageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -137,9 +137,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CouchBaseStorage\CouchBaseProviders.csproj">
+    <ProjectReference Include="..\CouchbaseStorage\CouchbaseProviders.csproj">
       <Project>{f6ff0615-09b1-4e59-9c65-cc16ba0b379b}</Project>
-      <Name>CouchBaseProviders</Name>
+      <Name>CouchbaseProviders</Name>
     </ProjectReference>
     <ProjectReference Include="..\TestGrains\TestGrains.csproj">
       <Project>{94ce7cc3-a0f9-41dc-aa26-c70339786718}</Project>
